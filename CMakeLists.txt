@@ -192,3 +192,6 @@ include_directories(
 
 add_executable(Odomet src/odometry.cpp)
 target_link_libraries(Odomet ${catkin_LIBRARIES})
+
+add_executable(go2po src/challenge_2point.cpp)
+target_link_libraries(go2po ${catkin_LIBRARIES})

@@ -16,5 +16,5 @@ int main(int argc, char** argv)
     ros::NodeHandle nh;
     
     ros::Subscriber odom_sub = nh.subscribe("/vrep/vehicle/odometry",1,callback);
-    ros::spin()
+    ros::spin();
 }
