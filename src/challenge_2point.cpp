@@ -18,23 +18,23 @@ void callback(const nav_msgs::OdometryConstPtr &msg)
     double yaw = tf::getYaw(qt);
     double ang = yaw*180/M_PI;
     distance = sqrt(pow(x_final-x_atual,2)+ pow(y_final-y_atual,2));
-    theta = atan((y_final-y_atual)/(x_final-x_atual))*180/M_PI;
+    theta = atan2(y_final-y_atual,x_final-x_atual)*180/M_PI;
     var_theta = theta - ang;
     if(var_theta > 180)//normalização
     {
         var_theta = var_theta - 360;
     }
+    if(var_theta < -180)//normalização
+    {
+        var_theta = var_theta + 360;
+    }
     if(distance>0.2)
     {
-        if(abs(var_theta)>0.7)
+        velocidade.linear.x = 0.6;
+        velocidade.angular.z = 0;
+        if(abs(var_theta)>10)
         {
-            velocidade.linear.x = 0;
-            velocidade.angular.z = 0.1*var_theta;
-        }
-        else
-        {
-            velocidade.linear.x = 0.5;
-            velocidade.angular.z = 0;
+            velocidade.angular.z = 0.02*var_theta;
         }
     }
     else
@@ -42,6 +42,7 @@ void callback(const nav_msgs::OdometryConstPtr &msg)
         velocidade.linear.x = 0;
         velocidade.angular.z = 0;
     }
+    ROS_INFO("var_theta : %f",var_theta);
     pub_v.publish(velocidade);
 }
 
